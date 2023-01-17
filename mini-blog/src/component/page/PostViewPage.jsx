@@ -89,7 +89,7 @@ function PostViewPage(props) {
                 <Button 
                     title="댓글 작성하기"
                     onClick={() => {
-                        navigate("/");
+                        navigate("/"); 
                     }}
                 />
             </Container>

@@ -22,11 +22,11 @@ import Blocks from './chapter_15/Blocks';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
-// root.render(
-//   <React.StrictMode>
-//     <Library />
-//   </React.StrictMode>
-// );
+root.render(
+  <React.StrictMode>
+    <Library />
+  </React.StrictMode>
+);
 
 // setInterval(() => { 
 //   root.render(
@@ -101,12 +101,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 //   </React.StrictMode>
 // )
 
-root.render(
-  <React.StrictMode>
-    <Blocks/>
-  </React.StrictMode>
+// root.render(
+//   <React.StrictMode>
+//     <Blocks/>
+//   </React.StrictMode>
 
-)
+// )
 
 
 

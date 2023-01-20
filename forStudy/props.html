@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        function Btn({text, fontSize=16, changeValue, big}){
+            console.log(text,"was rendered");
+            return (
+            <button 
+                onClick ={changeValue}
+                style={{
+                    backgroundColor:"tomato",
+                    color:"white",
+                    padding:"10px 20px",
+                    border: 0,
+                    borderRadius: 10,
+                    fontSize: big ? 20 : 10,
+
+                }}>{text}
+                </button>
+            );
+        }
+
+        //prop으로 넘기는 값이 맞는 타입인지 확인할수 있다 
+        Btn.propTypes ={
+            text: PropTypes.string.isRequired,
+            fontSize: PropTypes.number.isRequired,
+        }
+        //props가 바뀌면 리렌더링 되지만 memo()를 쓰면 바뀌는 값이 없는곳은 리렌더링 안됨
+        const MemorizedBtn = React.memo(Btn);
+        const App = () => {
+            const [value, setValue] = React.useState("Save Changes");
+            const changeValue = () => setValue("Revert Changes");
+            return (
+                <div>
+                    <MemorizedBtn text={value} big={true} changeValue={changeValue}/>
+                    <MemorizedBtn text="Continue" big={false} />
+                    <MemorizedBtn text="Continue" big={false} fontSize={40} />
+                </div>
+            );
+        }
+        const root =document.getElementById("root");
+        const root2 = ReactDOM.createRoot(root);
+        root2.render(<App/>);
+    </script>
+</html>

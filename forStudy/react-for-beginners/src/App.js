@@ -1,6 +1,7 @@
 import Button from "./Button";
 import styles from "./App.module.css"
 import {useState , useEffect, useReducer} from "react";
+import Movie from "./components/Movie.js";
 
 // css Import해서 먹이기
 
@@ -115,40 +116,63 @@ import {useState , useEffect, useReducer} from "react";
 // }
 ////////// toDoList 끝///////////////////////////////////////////////////////
 
-function App() {
-  const [loading, setLoading] = useState(true); 
-  const [coins, setCoins] =useState([]);
+////////// coin tracker 시작///////////////////////////////////////////////////////
+// function App() {
+//   const [loading, setLoading] = useState(true); 
+//   const [coins, setCoins] =useState([]);
 
-  const [amount, setAmount] =useState(0);
+//   const [amount, setAmount] =useState(0);
 
-  const onChange = (event) => setAmount(event.target.value); 
+//   const onChange = (event) => setAmount(event.target.value); 
 
-  useEffect(() => {
-    fetch("https://api.coinpaprika.com/v1/tickers")
-    .then((response) => response.json())
-    .then((json) => {
-      console.log(coins);
-      setCoins(json);
-      setLoading(false);
-    });
-  }, []);
+//   useEffect(() => {
+//     fetch("https://api.coinpaprika.com/v1/tickers")
+//     .then((response) => response.json())
+//     .then((json) => {
+//       console.log(coins);
+//       setCoins(json);
+//       setLoading(false);
+//     });
+//   }, []);
+//   return (
+//     <div>
+//       <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>  
+//       {loading ? "Loading..." :       
+//       <select>
+//         {coins.map((coin, index) =>{
+//         let temp = amount/JSON.stringify(coin.quotes.USD.price);
+//         return(
+//         <option key={index}>
+//           {coin.name} ({coin.symbol}) : {amount ? `${Math.floor(temp)} 개 구입가능합니다.`  : coin.quotes.USD.price+ " 달러"}
+//         </option>
+//         )})}
+//       </select>
+//       }
+//       <hr />
+//       <input onChange={onChange} type="number" placeholder=""/> 달러 지출시
+//     </div>
+//   )
+// }
+
+////////// coin tracker 끝///////////////////////////////////////////////////////
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Home from "./routes/Home";
+import Detail from "./routes/Detail";
+
+function App(){
   return (
-    <div>
-      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>  
-      {loading ? "Loading..." :       
-      <select>
-        {coins.map((coin, index) =>{
-        let temp = amount/JSON.stringify(coin.quotes.USD.price);
-        return(
-        <option key={index}>
-          {coin.name} ({coin.symbol}) : {amount ? `${Math.round(temp)} 개 구입가능합니다.`  : coin.quotes.USD.price+ " 달러"}
-        </option>
-        )})}
-      </select>
-      }
-      <hr />
-      <input onChange={onChange} type="number" placeholder=""/> 달러 지출시
-    </div>
+  <Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/movie/:id" element={<Detail />} />
+      <Route path="/hello" element={<h2>hello!</h2>} />
+    </Routes>
+  </Router>
   )
 }
 

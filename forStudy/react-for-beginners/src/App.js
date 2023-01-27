@@ -2,8 +2,9 @@ import Button from "./Button";
 import styles from "./App.module.css"
 import {useState , useEffect, useReducer} from "react";
 import Movie from "./components/Movie.js";
+import style from "./components/styles.css";
 
-// css Import해서 먹이기
+// 모듈 css Import해서 먹이기
 
 // function App() {
 //   return (

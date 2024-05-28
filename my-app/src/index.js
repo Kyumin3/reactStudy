@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
 import Library from './chapter_03/Library';
 import Clock from './chapter_04/Clock';
 import CommentList from './chapter_05/CommentList';
@@ -17,6 +16,7 @@ import Calculator from './chapter_12/Calculator';
 import ProfileCard from './chapter_13/ProfileCard';
 import DarkOrLight from './chapter_14/DarkOrLight';
 import Blocks from './chapter_15/Blocks';
+import Increase from './TEST/Increase';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -95,11 +95,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 //   </React.StrictMode>
 // )
 
-root.render(
-  <React.StrictMode>
-    <DarkOrLight/>
-  </React.StrictMode>
-)
+// root.render(
+//   <React.StrictMode>
+//     <DarkOrLight/>
+//   </React.StrictMode>
+// )
 
 // root.render(
 //   <React.StrictMode>
@@ -107,6 +107,13 @@ root.render(
 //   </React.StrictMode>
 
 // )
+
+root.render(
+  <React.StrictMode>
+    <Increase/>
+  </React.StrictMode>
+
+)
 
 
 

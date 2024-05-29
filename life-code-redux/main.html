@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.js" integrity="sha512-aU+9st6E3LYPknXJiOkhUXxYz/QbB1IDf1YUYzCCbgiwOCu2g/1pH+68ROdxC3clouCOVfO6u2g7qoB43rfmQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <div id="subject"></div>
+        <div id="toc"></div>
+        <div id="control"></div>
+        <div id="article"></div>
+        <script>
+            function subject(){
+                document.querySelector('#subject').innerHTML =`
+                    <header>
+                        <h1>WEB</h1>
+                        Hello, WEB!
+                    </header>
+                `
+            }
+            function TOC(){
+                var state = store.getState();
+                var temp = '';
+                state.contents.map((item)=>{
+                    temp += `<li><a onclick="
+                            event.preventDefault();
+                            var action = {type : 'SELECT', id : ${item.id}}
+                            store.dispatch(action);
+                        "
+                        href="${item.id}.html">${item.title}</a></li>`;
+                })
+                document.querySelector('#toc').innerHTML = `
+                <nav>
+                    <ol> 
+                        ${temp}
+                    </ol>
+                </nav>
+                `
+            }
+            function control(){
+                document.querySelector('#control').innerHTML=`
+                <ul>
+                    <li><a href="/create">create</a></li>
+                    <li><input type="button" value="delete"/></li>
+                </ul>
+                `
+            }
+            function article(){
+                var state = store.getState();
+                var temp = state.contents.find((item) => item.id === state.select_id);
+
+                // var i = 0;
+                // var aTitle;
+                // var aDesc;
+                // while(i<state.contents.length){
+                //     if(state.contents[i] == state.select_id){
+                //         aTitle = state.contents[i].title;
+                //         aDesc = state.contents[i].aDesc;
+                //         break;
+                //     }
+                //     i+= 1;
+                // }
+
+                if(!!temp){
+                    document.querySelector('#article').innerHTML =`
+                <article>
+                    <h2>${temp.title}</h2>
+                    ${temp.desc}
+                </article>                    
+                `
+                }
+
+            }
+            
+            function reducer(state, action){
+                if(state === undefined){
+                    return {
+                        select_id : null,
+                        contents: [
+                            {id: 1, title: 'HTML', desc:'HTML is...'},
+                            {id: 2, title: 'CSS', desc:'CSS is...'}
+                        ]
+                    }
+                }
+                var newState;
+                if(action.type ==='SELECT'){
+                    newState = Object.assign({}, state, {select_id : action.id})
+                }
+                console.log(action, state, newState);
+                return newState;
+            }
+
+            var store = Redux.createStore(reducer);
+            store.subscribe(article);
+            subject();
+            TOC();
+            control();
+            article();
+        </script>
+
+
+    </body>
+
+</html>

@@ -23,7 +23,7 @@
                 state.contents.map((item)=>{
                     temp += `<li><a onclick="
                             event.preventDefault();
-                            var action = {type : 'SELECT', id : ${item.id}}
+                            var action = {type : 'SELECT', id : ${item.id}, mode : 'read'}
                             store.dispatch(action);
                         "
                         href="${item.id}.html">${item.title}</a></li>`;
@@ -37,43 +37,116 @@
                 `
             }
             function control(){
+                var state = store.getState();
+                var display = state.mode ==="read"? "block" : "none";
+        
                 document.querySelector('#control').innerHTML=`
                 <ul>
-                    <li><a href="/create">create</a></li>
-                    <li><input type="button" value="delete"/></li>
+                    <li><a onclick="event.preventDefault();
+                            var action = {type : 'CHANGE_MODE', mode : 'create'}
+                            store.dispatch(action);
+                        " href="/create">create</a></li>
+                    <li style ="display:${display}"><input type="button" value="delete" onclick="
+                            event.preventDefault();
+                            var action = {type: 'DELETE', mode: 'welcome'};
+                            store.dispatch(action);
+                        "/></li>
                 </ul>
                 `
             }
             function article(){
                 var state = store.getState();
-                var temp = state.contents.find((item) => item.id === state.select_id);
+                console.log("state.mode::::", state.mode);
 
-                // var i = 0;
-                // var aTitle;
-                // var aDesc;
-                // while(i<state.contents.length){
-                //     if(state.contents[i] == state.select_id){
-                //         aTitle = state.contents[i].title;
-                //         aDesc = state.contents[i].aDesc;
-                //         break;
-                //     }
-                //     i+= 1;
-                // }
-
-                if(!!temp){
+                if(state.mode === 'create'){
                     document.querySelector('#article').innerHTML =`
-                <article>
-                    <h2>${temp.title}</h2>
-                    ${temp.desc}
-                </article>                    
-                `
-                }
+                        <article>
+                            <form onsubmit="
+                                event.preventDefault();
+                                var _title = this.title.value;
+                                var _desc = this.desc.value;
+                                store.dispatch({type : 'CREATE', title : _title, desc : _desc})
+                            ">
+                                <p>
+                                    <input type="text" name="title" placeholder="title" />
+                                </p>
+                                <p>
+                                    <textarea name="desc" placeholder="description"></textarea>
+                                </p>
+                                <p>
+                                    <input type="submit" />
+                                </p>
+                            </form>
+                        </article>
+                    
+                    `
 
+                }else if(state.mode ==='read'){
+                    console.log("state.select_id:::", state.select_id);
+                    var temp = state.contents.find((item) => item.id === state.select_id);
+
+                    // var i = 0;
+                    // var aTitle;
+                    // var aDesc;
+                    // while(i<state.contents.length){
+                    //     if(state.contents[i] == state.select_id){
+                    //         aTitle = state.contents[i].title;
+                    //         aDesc = state.contents[i].aDesc;
+                    //         break;
+                    //     }
+                    //     i+= 1;
+                    // }
+
+                    if(!!temp){
+                        document.querySelector('#article').innerHTML =`
+                    <article>
+                        <h2>${temp.title}</h2>
+                        ${temp.desc}
+                        <p><button type="button" onclick="
+                            event.preventDefault();
+                            store.dispatch({type: 'CHANGE_MODE', mode: 'update'})
+                            ">수정</button></p>
+                    </article>                    
+                    `
+                    }
+
+                } else if(state.mode ==='welcome'){
+                    document.querySelector('#article').innerHTML =`
+                        <article>
+                            <h2>Welcome</h2>
+                            Hello, Redux!!
+                        </article>
+                    `
+                } else if(state.mode ==='update'){
+                    console.log("state.select_id:::", state.select_id);
+                    var temp = state.contents.find((item) => item.id === state.select_id);
+
+                    if(!!temp){
+                        document.querySelector('#article').innerHTML =`
+                    <article>
+                        <form onsubmit="
+                            event.preventDefault();
+                            var _title = this.title.value;
+                            var _desc = this.desc.value;
+                            store.dispatch({type : 'UPDATE', title : _title, desc : _desc})
+                        ">
+                            <p><input type="text" value="${temp.title}" name="title" /></p>
+                            <p><input type="text" value="${temp.desc}" name="desc" /></p>
+                            <p><input type="submit" /></p>
+                        </form>
+                    </article>                    
+                    `
+                    }
+
+                }
             }
             
             function reducer(state, action){
+                console.log("action:::", action);
                 if(state === undefined){
                     return {
+                        max_id : 2,
+                        mode : "welcome",
                         select_id : null,
                         contents: [
                             {id: 1, title: 'HTML', desc:'HTML is...'},
@@ -83,7 +156,41 @@
                 }
                 var newState;
                 if(action.type ==='SELECT'){
-                    newState = Object.assign({}, state, {select_id : action.id})
+                    newState = Object.assign({}, state, {select_id : action.id, mode : action.mode})
+                } else if(action.type === 'CREATE') {
+
+                    // var maxId = state.contents[0].id;
+                    // for(var i = 0; i<state.contents.length; i++){
+                    //     if(state.contents[i].id > maxId){
+                    //         maxId = state.contents[i].id;
+                    //     }
+                    // }
+                    var newContents = [... state.contents];
+                    newContents.push({id : state.max_id + 1 ,title : action.title, desc : action.desc});
+                    newState = Object.assign({}, state, {contents : newContents, mode : 'read' , max_id : state.max_id + 1, select_id : state.max_id + 1})
+
+                } else if(action.type === 'DELETE'){
+
+                    var newContents = [... state.contents];
+                    const index = newContents.findIndex(obj => obj.id === state.select_id);
+                    if(index != -1){
+                        newContents.splice(index, 1);
+                        console.log(state.max_id === state.select_id? state.max_id -1 : state.max_id);
+                        newState = Object.assign({}, state, {contents : newContents, max_id : state.max_id === state.select_id? state.max_id -1 : state.max_id, mode : 'welcome'});
+                    }
+
+                } else if(action.type === 'CHANGE_MODE'){
+                    newState = Object.assign({}, state, {mode : action.mode});
+                } else if(action.type === 'UPDATE'){
+                    var newContents = [... state.contents];
+                    newContents.find(item=>{
+                        if(item.id === state.select_id){
+                            item.title = action.title;
+                            item.desc = action.desc;
+                        }
+                    });
+                    console.log("newContents:::", newContents);
+                    newState = Object.assign({}, state, {contents : newContents, mode : "read"})
                 }
                 console.log(action, state, newState);
                 return newState;
@@ -91,6 +198,8 @@
 
             var store = Redux.createStore(reducer);
             store.subscribe(article);
+            store.subscribe(TOC);
+            store.subscribe(control);
             subject();
             TOC();
             control();

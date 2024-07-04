@@ -65,7 +65,7 @@ export default function CreateWord() {
         <label>Day</label>
         <select ref={dayRef}>
           {sortedDays.map( day => (
-              <option option key={day.id} value={day.day}>{day.day}일</option>
+              <option key={day.id} value={day.day}>{day.day}일</option>
           ))}
           
         </select>

@@ -7,7 +7,7 @@ function TodoBaord(props){
         <div>
             <h1>Todo List</h1>
             {props.list.map((item) => 
-                <TodoItem item={item.value} id={item.id} setTodoList = {props.setTodoList} todoList={props.todoList}/>
+                <TodoItem item={item.value} id={item.id} key={item.id} setTodoList = {props.setTodoList} todoList={props.todoList}/>
             )}
             
         </div>

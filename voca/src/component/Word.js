@@ -11,33 +11,26 @@ export default function Word({ word : w }) {
     }
 
     async function toggleDone() {
-        fetch(`http://localhost:3001/words/${word.id}`, {
-            method : 'PUT',
-            headers : {
-                'content-Type' : 'application/json'
-            },
-            body: JSON.stringify({
-                ...word, 
-                isDone: !isDone,
-            }),
-        })
-        .then(res => {
-            if(res.ok) {
+
+        await axios.put(`http://localhost:3001/words/${word.id}`, 
+            JSON.stringify({
+            ...word, 
+            isDone: !isDone,
+        })  ).then(res => {
+            if(res.statusText === 'OK') {
                 setIsDone(!isDone)
             }
         })
-
     }
 
     async function del() {
         if(window.confirm('삭제하시겠습니까?')){
-            fetch(`http://localhost:3001/words/${word.id}`, {
-                method : 'DELETE',
-            })
+            await axios.delete(`http://localhost:3001/words/${word.id}`)
             .then(res => {
-                setWord({id : 0})
+                if(res.statusText === 'OK') {
+                    setWord({id : 0});
+                }
             })
-
         }
     }
 

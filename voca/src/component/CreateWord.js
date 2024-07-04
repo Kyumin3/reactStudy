@@ -23,26 +23,21 @@ export default function CreateWord() {
 
     if(!isLoading){
       setIsLoading(true);
-      fetch(`http://localhost:3001/words/`, {
-        method : 'POST',
-        headers : {
-            'content-Type' : 'application/json'
-        },
-        body: JSON.stringify({
+      await axios.post(`http://localhost:3001/words/`, 
+        JSON.stringify({
           day : dayRef.current.value,
           eng : engRef.current.value,
           kor : korRef.current.value,
           isDone : false
-        }),
-      })
+        })
+      )
       .then(res => {
-          if(res.ok) {
+          if(res.statusText === 'Created') {
               alert('생성 완료~~');
               navigate(`/day/${dayRef.current.value}`);
               setIsLoading(false);
           }
       })
-
     }
 
 }
@@ -65,7 +60,7 @@ export default function CreateWord() {
         <label>Day</label>
         <select ref={dayRef}>
           {sortedDays.map( day => (
-              <option option key={day.id} value={day.day}>{day.day}일</option>
+              <option key={day.id} value={day.day}>{day.day}일</option>
           ))}
           
         </select>

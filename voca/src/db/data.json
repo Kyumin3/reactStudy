@@ -17,12 +17,8 @@
       "day": 5
     },
     {
-      "id": "2d41",
+      "id": "f2cf",
       "day": 1
-    },
-    {
-      "id": "de98",
-      "day": 6
     }
   ],
   "words": [
@@ -90,11 +86,11 @@
       "isDone": false
     },
     {
-      "id": "0436",
+      "id": "aa27",
       "day": "1",
-      "eng": "123",
-      "kor": "123",
-      "isDone": true
+      "eng": "dd",
+      "kor": "dd",
+      "isDone": false
     }
   ]
 }

@@ -9,11 +9,11 @@ export default function Day() {
     const a = useParams();
     const day = a.day;
 
+
     const navigate = useNavigate();
 
     let words = useFetch(`http://localhost:3001/words?day=${day}`);
     let days = useFetch('http://localhost:3001/days');
-    
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function Day() {
       }}>다음 일</button>}
       
     </div>
-    {words.length === 0 && <span>Loading...</span>}
+    {words.length === 0 && <span>Loading</span>}
     <table>
         <tbody>
             {words.map( word => (

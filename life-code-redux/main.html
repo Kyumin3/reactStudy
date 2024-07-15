@@ -171,6 +171,22 @@
 
                 } else if(action.type === 'DELETE'){
 
+                    // var newContents = [];
+                    // var i = 0;
+                    // while(i < state.contents.length) {
+                    //     if(state.select_id !== state.contents[i].id){
+                    //         newContents.push(
+                    //             state.contents[i]
+                    //         );
+                    //     }
+                    //     i++;
+                    // }
+                    // newState = Object.assign({}, state, {
+                    //     contents:newContents,
+                    //     mode: 'welcome'
+                    // })
+
+
                     var newContents = [... state.contents];
                     const index = newContents.findIndex(obj => obj.id === state.select_id);
                     if(index != -1){

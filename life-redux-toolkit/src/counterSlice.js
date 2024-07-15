@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, configureStore} from '@reduxjs/toolkit';
 
 const counterSlice = createSlice({
     name : 'counterSlice',
@@ -13,6 +13,8 @@ const counterSlice = createSlice({
       }
     }
   });
+
+
 
   console.log("counterSlice::::", counterSlice);
 

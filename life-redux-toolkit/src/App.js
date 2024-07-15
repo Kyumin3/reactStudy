@@ -19,6 +19,7 @@ import { up, down } from './counterSlice';
 // var store = createStore(reducer, initialState);
 
 function Counter(){
+  console.log("counterSlice:::", counterSlice);
   const disPatch = useDispatch();
   const count = useSelector(state => {
     return state.counter.value;
